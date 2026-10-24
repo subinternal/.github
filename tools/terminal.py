@@ -8,7 +8,7 @@ does. Each line fades in in turn, the score counts up, and the whole run loops. 
 from pathlib import Path
 
 OUT = Path(__file__).resolve().parent.parent / 'profile' / 'assets'
-W, H = 960, 470
+W, H = 960, 456
 LOOP = 16.0  # seconds for one whole run, then it starts again
 MONO = "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace"
 
@@ -21,15 +21,15 @@ THEMES = {
 LINES = [
     ([('$ ', 'faint', 400), ('npx skills add subinternal/mttr', 'ink', 500)], 0.0),
     ([('  added 6 skills to .claude/skills', 'muted', 400)], 0.0),
-    ([('> ', 'accent', 600), ('Check yoursite.com with mttr and fix what’s worth the most.', 'ink', 500)], 1.2),
-    ([('  mttr  ', 'accent', 600), ('read 100 pages, ranked 14 fixes by worth', 'muted', 400)], 2.6),
-    ([('  ✓ ', 'good', 600), ('Text in the HTML, 12 pages', 'ink', 400)], 3.8),
-    ([('  ✓ ', 'good', 600), ('One main heading, 31 pages', 'ink', 400)], 4.6),
-    ([('  ✓ ', 'good', 600), ('Structured data, 18 pages', 'ink', 400)], 5.4),
-    ([('  mttr  ', 'accent', 600), ('read it again', 'muted', 400)], 6.6),
+    ([('> ', 'accent', 600), ('Check yoursite.com with mttr and fix what’s worth the most.', 'ink', 500)], 0.8),
+    ([('  mttr  ', 'accent', 600), ('read 100 pages, ranked 14 fixes by worth', 'muted', 400)], 1.8),
+    ([('  ✓ ', 'good', 600), ('Text in the HTML, 12 pages', 'ink', 400)], 2.6),
+    ([('  ✓ ', 'good', 600), ('One main heading, 31 pages', 'ink', 400)], 3.2),
+    ([('  ✓ ', 'good', 600), ('Structured data, 18 pages', 'ink', 400)], 3.8),
+    ([('  mttr  ', 'accent', 600), ('read it again', 'muted', 400)], 4.8),
 ]
-FIXES = [('+9', 3.8), ('+6', 4.6), ('+4', 5.4)]
-SCORE_AT = 7.4
+FIXES = [('+9', 2.6), ('+6', 3.2), ('+4', 3.8)]
+SCORE_AT = 5.6
 
 
 def esc(text: str) -> str:
@@ -47,7 +47,7 @@ def keyframes(name: str, start: float) -> str:
 
 def draw(theme: str) -> str:
     t = THEMES[theme]
-    css: list[str] = [f'text{{font-family:{MONO};font-size:17px}}', '.l{opacity:0}']
+    css: list[str] = [f'text{{font-family:{MONO};font-size:17px}}']
     body: list[str] = []
     x0, y0, step = 56, 132, 34
     for i, (pieces, start) in enumerate(LINES):
@@ -72,10 +72,10 @@ def draw(theme: str) -> str:
     css.append(f'.old{{animation:old {LOOP}s ease-out infinite}}.new{{animation:new {LOOP}s ease-out infinite}}')
     body.append(f'<g class="l sc"><text x="{x0}" y="{sy}" fill="{t["muted"]}">  score</text>'
                 f'<rect x="{bar_x}" y="{sy - 13}" width="{bar_w}" height="14" rx="7" fill="{t["bar"]}"/>'
-                f'<rect class="bar" x="{bar_x}" y="{sy - 13}" width="{bar_w * 0.61:.0f}" height="14" rx="7" fill="url(#g)"/>'
-                f'<text class="old" x="{bar_x + bar_w + 22}" y="{sy}" fill="{t["score"]}" font-weight="700" font-size="20">61</text>'
+                f'<rect class="bar" x="{bar_x}" y="{sy - 13}" width="{bar_w * 0.88:.0f}" height="14" rx="7" fill="url(#g)"/>'
+                f'<text class="old" x="{bar_x + bar_w + 22}" y="{sy}" fill="{t["score"]}" font-weight="700" font-size="20" opacity="0">61</text>'
                 f'<text class="new" x="{bar_x + bar_w + 22}" y="{sy}" fill="{t["score"]}" font-weight="700" font-size="20">88</text></g>')
-    css.append('@media (prefers-reduced-motion: reduce){.l,.bar,.old,.new{animation:none!important;opacity:1}.old{opacity:0}}')
+    css.append('@media (prefers-reduced-motion: reduce){.l,.bar,.old,.new{animation:none!important}}')
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="An example run of mttr in a terminal: the skills are added, mttr reads 100 pages and ranks 14 fixes, three fixes land, mttr reads the site again, and the score goes from 61 to 88.">
 <title>An example run of mttr on a made-up site</title>
 <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#ff4f9f"/><stop offset=".55" stop-color="#ff8a4c"/><stop offset="1" stop-color="#ffc233"/></linearGradient></defs>
@@ -83,9 +83,9 @@ def draw(theme: str) -> str:
 <rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="18" fill="{t["panel"]}" stroke="{t["edge"]}"/>
 <line x1="1" y1="78" x2="{W - 1}" y2="78" stroke="{t["edge"]}"/>
 <circle cx="56" cy="51" r="6" fill="{t["edge"]}"/><circle cx="76" cy="51" r="6" fill="{t["edge"]}"/><circle cx="96" cy="51" r="6" fill="{t["edge"]}"/>
-<text x="{W / 2}" y="56" text-anchor="middle" fill="{t["muted"]}" font-size="14">claude  ~/your-site</text>
+<text x="128" y="56" fill="{t["muted"]}" font-size="14">claude  ~/your-site</text>
 {chr(10).join(body)}
-<text x="{W - 32}" y="{H - 22}" text-anchor="end" fill="{t["faint"]}" font-size="13">An example run on a made-up site.</text>
+<text x="{W - 32}" y="56" text-anchor="end" fill="{t["faint"]}" font-size="13">An example run on a made-up site.</text>
 </svg>
 '''
 
