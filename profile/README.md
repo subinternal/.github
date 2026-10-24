@@ -20,6 +20,8 @@ mttr reads a site the way search engines and AI assistants do, checks every page
   <img alt="An example run of mttr on a made-up site: the skills are added, mttr reads 100 pages and ranks 14 fixes, three fixes land, mttr reads the site again, and the score goes from 61 to 88." src="assets/terminal-light.svg" width="100%">
 </picture>
 
+<br>
+
 ```sh
 npx skills add subinternal/mttr
 ```
@@ -30,6 +32,9 @@ Then tell your agent: *"Check yoursite.com with mttr and fix what's worth the mo
   <source media="(prefers-color-scheme: dark)" srcset="https://mttr.si/stats.svg?theme=dark">
   <img alt="mttr's figures, live: sites read, pages read, and the rules every page is held to." src="https://mttr.si/stats.svg" width="100%">
 </picture>
+
+<br>
+<br>
 
 <table>
 <tr>
